@@ -13,6 +13,8 @@ public class CharacterController2D : MonoBehaviour
     public LayerMask groundLayer;
     public float jumpForce;
     Animator animator;
+    int numberOfJumps = 1;
+    int maxJumps = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -50,11 +52,17 @@ public class CharacterController2D : MonoBehaviour
         // Is the player touching the ground ?
         grounded = groundCheck.IsTouchingLayers(groundLayer);
 
-        // Only jump if the player is grounded and has pressed the Space bar
+        if (grounded)
+        {
+            numberOfJumps = 1;
+        }
 
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if (Input.GetKeyDown(KeyCode.Space) && (grounded || numberOfJumps < maxJumps))
+        {
             rb2d.AddForce(new Vector2(0f, jumpForce));
-
+            numberOfJumps++;
+        }
+        
         animator.SetBool("Jumping", !grounded);
 
     }
@@ -71,4 +79,6 @@ public class CharacterController2D : MonoBehaviour
 
         transform.localScale = scale;
     }
+
+
 }

@@ -44,5 +44,28 @@ public class HealthManager : MonoBehaviour
         }
 
         healthSlider.value = health / MAXHEALTH;
+        if (amount > 0)
+        {
+            GetComponent<AudioSource>().Play();
+        }
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Star")
+        {
+            Destroy(collision.gameObject);
+            gameObject.tag = "PowerUp";
+            gameObject.GetComponent<Renderer>().material.color = Color.green;
+            StartCoroutine("reset");
+        }
+
+    }
+    IEnumerator reset()
+    {
+        yield return new WaitForSeconds(5f);
+        gameObject.tag = "Player";
+        gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
 }

@@ -11,7 +11,8 @@ public class HealthBonus : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             collision.gameObject.GetComponent<HealthManager>().TakeDamage(-bonus);
-            Destroy(gameObject, 3);
+            gameObject.GetComponent<ParticleSystem>().Play();
+            Destroy(gameObject, 1);
         }
     }
 }

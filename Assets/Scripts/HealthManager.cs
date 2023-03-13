@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HealthManager : MonoBehaviour
 {
@@ -18,13 +19,17 @@ public class HealthManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (gameObject.transform.position.y < -9.4)
+        {
+            this.Die();
+        }
     }
 
     void Die()
     {
         GetComponent<Animator>().SetBool("Dead", true);
         GetComponent<CharacterController2D>().enabled = false;
+        StartCoroutine("GameOverTransition");
     }
 
     public void TakeDamage(float amount)
@@ -67,5 +72,11 @@ public class HealthManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
         gameObject.tag = "Player";
         gameObject.GetComponent<Renderer>().material.color = Color.white;
+    }
+
+    IEnumerator GameOverTransition()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(3);
     }
 }
